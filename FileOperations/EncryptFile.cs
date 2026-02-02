@@ -7,15 +7,14 @@ namespace ProjetRSA.FileOperations;
 
 public static class EncryptFile
 {
-    public static void Execute()
+    public static void Execute(
+        string publicKeyFile = "rsa_public.pem",
+        string inputFile = "test.txt", 
+        string outputFile = "test.enc")
     {
-        const string publicKeyFile = "rsa_public.pem";
-        const string inputFile = "test.txt";
-        const string outputFile = "test.enc";
-
-        if (!File.Exists(publicKeyFile))
+            if (!File.Exists(publicKeyFile))
         {
-            Console.WriteLine("Public key file rsa_public.pem not found.");
+            Console.WriteLine($"Public key file ({publicKeyFile}) not found.");
             Console.WriteLine("Do you want to generate a new key pair (2048)? (y/n): ");
             string? response = Console.ReadLine();
             if (response?.ToLower() == "y" || response?.ToLower() == "yes")

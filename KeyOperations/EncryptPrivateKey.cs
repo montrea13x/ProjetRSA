@@ -6,11 +6,13 @@ using System.Text;
 namespace ProjetRSA.KeyOperations;
 public static class EncryptPrivateKey
 {
-    public static byte[] Execute(string plainText, string password)
+    public static byte[] Execute(
+        string plainText,
+        string password)
     {
         // Générer un salt aléatoire de 16 octets pour la dérivation de clé
         byte[] salt = RandomNumberGenerator.GetBytes(16);
-        
+
         // Dériver 48 octets (32 pour la clé AES-256 + 16 pour l'IV) avec PBKDF2 et SHA-256
         // 10000 itérations pour une dérivation sécurisée
         byte[] derived = Rfc2898DeriveBytes.Pbkdf2(

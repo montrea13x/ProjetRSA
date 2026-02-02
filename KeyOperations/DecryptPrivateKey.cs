@@ -7,7 +7,9 @@ namespace ProjetRSA.KeyOperations;
 
 public static class DecryptPrivateKey
 {
-    public static string Execute(byte[] encryptedData, string password)
+    public static string Execute(
+        byte[] encryptedData,
+        string password)
     {
         // Extraire les données de salt et de texte chiffré
         byte[] salt = encryptedData[..16];
@@ -33,14 +35,14 @@ public static class DecryptPrivateKey
         aes.Padding = PaddingMode.PKCS7;
         aes.Key = key;
         aes.IV = iv;
-        
+
         // Créer un décrypteur
         using var ms = new MemoryStream(ciphertext);
         using var decryptor = aes.CreateDecryptor();
         using var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
         using var sr = new StreamReader(cs, Encoding.UTF8);
-        
+
         return sr.ReadToEnd();
-        
+
     }
 }

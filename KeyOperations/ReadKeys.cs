@@ -7,21 +7,23 @@ namespace ProjetRSA.KeyOperations;
 
 public static class ReadKeys
 {
-    public static void Execute()
+    public static void Execute(
+        string publicKeyFile = "rsa_public.pem",
+        string privateKeyFile = "rsa_private.enc")
     {
         Console.WriteLine("=== Read RSA Keys ===\n");
 
-        if (!CheckRSAKey.Execute())
+        if (!CheckRSAKey.Execute(publicKeyFile, privateKeyFile))
         {
             Console.WriteLine("\nMissing RSA key files. Aborting.");
             return;
         }
-        
+
         Console.WriteLine("--- PUBLIC KEY ---");
-        string publicKey = File.ReadAllText("rsa_public.pem");
+        string publicKey = File.ReadAllText(publicKeyFile);
         Console.WriteLine(publicKey);
         Console.WriteLine();
-        
+
 
         // Read and decrypt private key
         Console.WriteLine("--- PRIVATE KEY (Encrypted) ---");
@@ -30,7 +32,7 @@ public static class ReadKeys
 
         try
         {
-            byte[] encryptedData = File.ReadAllBytes("rsa_private.enc");
+            byte[] encryptedData = File.ReadAllBytes(privateKeyFile);
             string privateKey = DecryptPrivateKey.Execute(encryptedData, password);
 
             Console.WriteLine("\n--- PRIVATE KEY (Decrypted) ---");

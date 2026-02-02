@@ -19,7 +19,7 @@ public static class GenerateKeys
             string privateKeyPem = new string(
                 PemEncoding.Write("PRIVATE KEY", rsa.ExportPkcs8PrivateKey())
             );
-            
+
             string publicKeyPem = new string(
                 PemEncoding.Write("PUBLIC KEY", rsa.ExportSubjectPublicKeyInfo())
             );
@@ -29,20 +29,23 @@ public static class GenerateKeys
 
             Console.Write("\nConfirm password: ");
             string confirmPassword = PasswordHelper.ReadPassword();
-            
+
             while (password != confirmPassword)
             {
                 Console.WriteLine("\nPasswords do not match. Please try again.");
-                
+
                 Console.Write("Enter password to encrypt private key: ");
                 password = PasswordHelper.ReadPassword();
-                
+
                 Console.Write("\nConfirm password: ");
                 confirmPassword = PasswordHelper.ReadPassword();
             }
 
-            byte[] encryptedPrivateKey = EncryptPrivateKey.Execute(privateKeyPem, password);
-            
+            byte[] encryptedPrivateKey = EncryptPrivateKey.Execute(
+                privateKeyPem,
+                password
+            );
+
             password = string.Empty;
             confirmPassword = string.Empty;
 

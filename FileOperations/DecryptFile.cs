@@ -7,15 +7,14 @@ namespace ProjetRSA.FileOperations;
 
 public static class DecryptFile
 {
-    public static void Execute()
+public static void Execute(
+    string inputFile = "test.enc", 
+    string outputFile = "test_decrypted.txt",
+    string privateKeyFile = "rsa_private.enc")
     {
-        const string privateKeyFile = "rsa_private.enc";
-        const string inputFile = "test.enc";
-        const string outputFile = "test_decrypted.txt";
-
         if (!File.Exists(privateKeyFile))
         {
-            Console.WriteLine("Private key file rsa_private.enc not found.");
+            Console.WriteLine($"Private key file ({privateKeyFile}) not found.");
             return;
         }
 
