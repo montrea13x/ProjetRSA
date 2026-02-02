@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ProjetRSA;
 
+
 class FileEncryptor
 {
     public static void Encrypt(
