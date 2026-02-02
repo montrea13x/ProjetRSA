@@ -41,7 +41,7 @@ public static class GenerateKeys
                 confirmPassword = PasswordHelper.ReadPassword();
             }
 
-            byte[] encryptedPrivateKey = EncryptPrivateKey.Execute(privateKeyPem, password);
+            byte[] encryptedPrivateKey = PrivateKeyEncryptor.Encrypt(privateKeyPem, password);
             
             password = string.Empty;
             confirmPassword = string.Empty;

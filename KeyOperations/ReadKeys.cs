@@ -31,7 +31,7 @@ public static class ReadKeys
         try
         {
             byte[] encryptedData = File.ReadAllBytes("rsa_private.enc");
-            string privateKey = DecryptPrivateKey.Execute(encryptedData, password);
+            string privateKey = PrivateKeyEncryptor.Decrypt(encryptedData, password);
 
             Console.WriteLine("\n--- PRIVATE KEY (Decrypted) ---");
             Console.WriteLine(privateKey);
