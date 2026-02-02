@@ -7,28 +7,30 @@ namespace ProjetRSA.KeyOperations;
 
 public static class CheckRSAKey
 {
-    public static bool Execute()
+    public static bool Execute(
+        string publicKeyFile = "rsa_public.pem",
+        string privateKeyFile = "rsa_private.enc")
     {
     bool valid = true;
-        if (!File.Exists("rsa_public.pem"))
+        if (!File.Exists(publicKeyFile))
         {
-            Console.WriteLine("Public key file rsa_public.pem not found.");
+            Console.WriteLine($"Public key file ({publicKeyFile}) not found.");
             valid = false;
         }
-        else if (new FileInfo("rsa_public.pem").Length == 0)
+        else if (new FileInfo(publicKeyFile).Length == 0)
         {
-            Console.WriteLine("Public key file rsa_public.pem is empty.");
+            Console.WriteLine($"Public key file ({publicKeyFile}) is empty.");
             valid = false;
         }
 
-        if (!File.Exists("rsa_private.enc"))
+        if (!File.Exists(privateKeyFile))
         {
-            Console.WriteLine("Private key file rsa_private.enc not found.");
+            Console.WriteLine($"Private key file ({privateKeyFile}) not found.");
             valid = false;
         }
-        else if (new FileInfo("rsa_private.enc").Length == 0)
+        else if (new FileInfo(privateKeyFile).Length == 0)
         {
-            Console.WriteLine("Private key file rsa_private.enc is empty.");
+            Console.WriteLine($"Private key file ({privateKeyFile}) is empty.");
             valid = false;
         }
         return valid;

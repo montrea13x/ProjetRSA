@@ -7,11 +7,13 @@ namespace ProjetRSA;
 
 class MessageRSA
 {
-    public static void EncryptMessage()
+    public static void EncryptMessage(
+        string publicKeyFile = "rsa_public.pem"
+    )
     {
-        if(File.Exists("rsa_public.pem") == false)
+        if(File.Exists(publicKeyFile) == false)
         {
-            Console.WriteLine("Public key file rsa_public.pem not found.");
+            Console.WriteLine($"Public key file {publicKeyFile} not found.");
             Console.WriteLine("Do you want to generate a new key pair? (y/n): ");
             string? response = Console.ReadLine();
             if (response != null && response.ToLower() == "y" || response != null && response.ToLower() == "yes")
@@ -29,14 +31,13 @@ class MessageRSA
 
         Console.WriteLine("=== Generate Message ===\n");
         Console.WriteLine("Enter message to encrypt: ");
-        
+
         string? message = Console.ReadLine();
         while (string.IsNullOrEmpty(message))
         {
             Console.WriteLine("No message entered. Please enter a valid message: ");
             message = Console.ReadLine();
         }
-        string publicKeyPem = File.ReadAllText("rsa_public.pem");
-        
+        string publicKeyPem = File.ReadAllText(publicKeyFile);
     }
 }
