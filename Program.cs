@@ -9,8 +9,8 @@ class Program
             { "generate", ProjetRSA.KeyOperations.GenerateKeys.Execute },
             { "read", _ => ProjetRSA.KeyOperations.ReadKeys.Execute() },
             { "encrypt", _ => ProjetRSA.MessageRSA.EncryptMessage() },
-            { "encryptfile", _ => ProjetRSA.FileOperations.EncryptFile.Execute() },
-            { "decryptfile", _ => ProjetRSA.FileOperations.DecryptFile.Execute() }
+            { "encryptfile", _ => ProjetRSA.FileEncryptor.Encrypt() },
+            { "decryptfile", _ => ProjetRSA.FileEncryptor.Decrypt() }
         };
 
         if (!ProjetRSA.CommandInput.CommandInput.TryExecute(args, commands))

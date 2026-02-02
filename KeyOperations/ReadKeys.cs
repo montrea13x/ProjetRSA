@@ -33,7 +33,7 @@ public static class ReadKeys
         try
         {
             byte[] encryptedData = File.ReadAllBytes(privateKeyFile);
-            string privateKey = DecryptPrivateKey.Execute(encryptedData, password);
+            string privateKey = PrivateKeyEncryptor.Decrypt(encryptedData, password);
 
             Console.WriteLine("\n--- PRIVATE KEY (Decrypted) ---");
             Console.WriteLine(privateKey);
