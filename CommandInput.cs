@@ -7,7 +7,7 @@ public static class CommandInput
         if (args.Length == 0)
             return false;
 
-        string command = args[0].ToLower();
+        string command = args[0];
 
         if (commands.TryGetValue(command, out var action))
         {

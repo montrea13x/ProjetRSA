@@ -53,4 +53,43 @@ public class CommandInputTests
         Assert.True(result);
         Assert.True(actionExecuted);
     }
+    [Fact]
+    public void TryExecute_PassesRemainingArgumentsToAction()
+    {
+        string[] receivedArgs = null!;
+
+        var commands = new Dictionary<string, Action<string[]>>
+        {
+            { "cmd", args => receivedArgs = args }
+        };
+
+        ProjetRSA.CommandInput.CommandInput.TryExecute(
+            new[] { "cmd", "a", "b" },
+            commands
+        );
+
+        Assert.NotNull(receivedArgs);
+        Assert.Equal(new[] { "a", "b" }, receivedArgs);
+    }
+
+    [Fact]
+    public void TryExecute_IsCaseInsensitive()
+    {
+        bool executed = false;
+
+        var commands = new Dictionary<string, Action<string[]>>(
+            StringComparer.OrdinalIgnoreCase
+        )
+    {
+        { "CaseCommand", _ => executed = true }
+    };
+
+    bool result = ProjetRSA.CommandInput.CommandInput.TryExecute(
+        new[] { "casecommand" },
+        commands
+    );
+
+    Assert.True(result);
+    Assert.True(executed);
+    }
 }

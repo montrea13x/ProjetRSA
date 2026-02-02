@@ -4,7 +4,9 @@ class Program
 {
     static void Main(string[] args)
     {
-        var commands = new Dictionary<string, Action<string[]>>
+        var commands = new Dictionary<string, Action<string[]>>(
+            StringComparer.OrdinalIgnoreCase
+            )
         {
             { "generate", ProjetRSA.KeyOperations.GenerateKeys.Execute },
             { "read", _ => ProjetRSA.KeyOperations.ReadKeys.Execute() },
