@@ -15,8 +15,6 @@ class FileEncryptor
         )
     {
 
-        
-
         if (!File.Exists(publicKeyFile))
         {
             Console.WriteLine("Public key file rsa_public.pem not found.");
@@ -105,25 +103,11 @@ class FileEncryptor
 
         byte[] encryptedFileContent = File.ReadAllBytes(inputFile);
 
-        // Lire la clé privée chiffrée
-        byte[] encryptedPrivateKey = File.ReadAllBytes(privateKeyFile);
-
-        Console.Write("Enter password to decrypt private key: ");
-        string password = PasswordHelper.ReadPassword();
-
-        string privateKeyPem;
-        try
+        using RSA? rsa = ProjetRSA.KeyOperations.KeyLoader.TryLoadPrivateKey(privateKeyFile);
+        if (rsa == null)
         {
-            privateKeyPem = ProjetRSA.KeyOperations.PrivateKeyEncryptor.Decrypt(encryptedPrivateKey, password);
-        }
-        catch (CryptographicException)
-        {
-            Console.WriteLine("Invalid password or corrupted private key.");
             return;
         }
-
-        using RSA rsa = RSA.Create();
-        rsa.ImportFromPem(privateKeyPem);
 
         using var ms = new MemoryStream(encryptedFileContent);
         using var br = new BinaryReader(ms);
