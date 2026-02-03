@@ -30,14 +30,11 @@ class Program
         Usage:
         dotnet run generate 2048       - Generate new RSA key pair, replacing 2048 with desired key size (2048, 3072 ou 4096)
         dotnet run read                - Read and display RSA keys
-        dotnet run encrypt             - Encrypt a message using the public key
         dotnet run encryptfile         - Encrypt a file using the public key
         dotnet run decryptfile         - Decrypt a file using the private key
         dotnet run generatecert        - Generate a self-signed certificate
         dotnet run signfile            - Sign a file (outputs Base64 signature file)
         dotnet run verifyfile          - Verify a file signature using the certificate
-        dotnet run signmessage         - Sign a message (prints Base64 signature)
-        dotnet run verifymessage       - Verify a message signature using the certificate
         """);
     }
 
