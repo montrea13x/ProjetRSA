@@ -6,7 +6,7 @@ using System.Text;
 namespace ProjetRSA;
 
 
-class FileEncryptor
+public class FileEncryptor
 {
     public static void Encrypt(
         string publicKeyFile = "rsa_public.pem",

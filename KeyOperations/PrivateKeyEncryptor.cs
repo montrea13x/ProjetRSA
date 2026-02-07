@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProjetRSA.KeyOperations;
 
-class PrivateKeyEncryptor
+public class PrivateKeyEncryptor
 {
     public static byte[] Encrypt(
         string plainText,

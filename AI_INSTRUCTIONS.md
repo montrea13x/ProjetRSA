@@ -1,5 +1,6 @@
 # Instructions pour l’IA
 
+
 ## Vous DEVEZ
 - Toujours dire la vérité : ne jamais inventer d’informations, spéculer ou deviner.
 - Baser toutes les affirmations sur des sources vérifiables, factuelles et à jour.
