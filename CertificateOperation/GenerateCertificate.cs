@@ -7,11 +7,11 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace ProjetRSA.CertificateOperations;
 
-class Certificate
+class GenerateCertificate
 {
     public static void GenerateRootCAFiles(
-        string certFile = "rootca.pem",
-        string keyFile = "rootca.key.pem"
+        string certFile = "certificates/rootca.pem",
+        string keyFile = "certificates/rootca.key.pem"
         )
     {
         var (cert, key) = GenerateRootCA();
@@ -22,16 +22,15 @@ class Certificate
     }
 
     public static void GenerateIntermediateCAFiles(
-        string rootCertFile = "rootca.pem",
-        string rootKeyFile = "rootca.key.pem",
-        string certFile = "intermediate.pem",
-        string keyFile = "intermediate.key.pem"
+        string rootCertFile = "certificates/rootca.pem",
+        string rootKeyFile = "certificates/rootca.key.pem",
+        string certFile = "certificates/intermediate.pem",
+        string keyFile = "certificates/intermediate.key.pem"
         )
     {
         if (!File.Exists(rootCertFile) || !File.Exists(rootKeyFile))
         {
-            Console.WriteLine("Root CA files not found. Generate them first: dotnet run generaterootcert");
-            return;
+            throw new CertificateOperation.CertificateException("Root CA files not found. Generate them first: dotnet run generaterootcert");
         }
 
         using var rootCert = X509Certificate2.CreateFromPem(File.ReadAllText(rootCertFile));
@@ -46,16 +45,15 @@ class Certificate
     }
 
     public static void GenerateEndEntityCertFiles(
-        string intermediateCertFile = "intermediate.pem",
-        string intermediateKeyFile = "intermediate.key.pem",
-        string certFile = "endentity.pem",
-        string keyFile = "endentity.key.pem"
+        string intermediateCertFile = "certificates/intermediate.pem",
+        string intermediateKeyFile = "certificates/intermediate.key.pem",
+        string certFile = "certificates/endentity.pem",
+        string keyFile = "certificates/endentity.key.pem"
         )
     {
         if (!File.Exists(intermediateCertFile) || !File.Exists(intermediateKeyFile))
         {
-            Console.WriteLine("Intermediate CA files not found. Generate them first: dotnet run generateintermediatecert");
-            return;
+            throw new CertificateOperation.CertificateException("Intermediate CA files not found. Generate them first: dotnet run generateintermediatecert");
         }
 
         using var intermediateCert = X509Certificate2.CreateFromPem(File.ReadAllText(intermediateCertFile));

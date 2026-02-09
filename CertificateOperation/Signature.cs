@@ -75,8 +75,8 @@ class Signature
         }
         catch (FormatException)
         {
-            Console.WriteLine("Invalid signature format. Expected Base64.");
-            return;
+            throw new CertificateOperation.CertificateException("Invalid signature format. Expected Base64.");
+
         }
 
         using var cert = X509Certificate2.CreateFromPem(File.ReadAllText(certFile));
@@ -84,8 +84,7 @@ class Signature
 
         if (rsa == null)
         {
-            Console.WriteLine("Certificate does not contain an RSA public key.");
-            return;
+            throw new CertificateOperation.CertificateException("Certificate does not contain an RSA public key.");
         }
 
         bool isValid = rsa.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
