@@ -32,6 +32,7 @@ public static class GenerateKeys
 
             while (password != confirmPassword)
             {
+                Loggers.LogError("Passwords do not match.");
                 Console.WriteLine("\nPasswords do not match. Please try again.");
 
                 Console.Write("Enter password to encrypt private key: ");
@@ -46,8 +47,29 @@ public static class GenerateKeys
             password = string.Empty;
             confirmPassword = string.Empty;
 
-            File.WriteAllBytes("rsa_private.enc", encryptedPrivateKey);
-            File.WriteAllText("rsa_public.pem", publicKeyPem, Encoding.ASCII);
+            try
+            {
+                Loggers.LogInfo("Writing encrypted private key to rsa_private.enc...");
+                File.WriteAllBytes("rsa_private.enc", encryptedPrivateKey);
+                Loggers.LogInfo("Successfully wrote encrypted private key to rsa_private.enc.");
+            }
+            catch (Exception ex)
+            {
+                Loggers.LogError($"Failed to write encrypted private key: {ex.Message}");
+                throw new KeyException($"Failed to write encrypted private key: {ex.Message}");
+            }
+
+            try
+            {
+                Loggers.LogInfo("Writing public key to rsa_public.pem...");
+                File.WriteAllText("rsa_public.pem", publicKeyPem, Encoding.ASCII);
+                Loggers.LogInfo("Successfully wrote public key to rsa_public.pem.");
+            }
+            catch (Exception ex)
+            {
+                Loggers.LogError($"Failed to write public key: {ex.Message}");
+                throw new KeyException($"Failed to write public key: {ex.Message}");
+            }
 
             Console.WriteLine($"\nRSA key pair generated ({keySize} bits).");
             Console.WriteLine("Saved rsa_private.enc (encrypted) and rsa_public.pem.");
@@ -55,11 +77,13 @@ public static class GenerateKeys
         }
         catch (CryptographicException ex)
         {
-            Console.WriteLine($"Cryptographic error: {ex.Message}");
+            Loggers.LogError($"Cryptographic error: {ex.Message}");
+            throw new KeyException($"Cryptographic error: {ex.Message}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            Loggers.LogError($"Error: {ex.Message}");
+            throw new KeyException($"Error: {ex.Message}");
         }
     }
 }

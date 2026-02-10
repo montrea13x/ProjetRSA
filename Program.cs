@@ -15,8 +15,8 @@ class Program
             { "generaterootcert", _ => ProjetRSA.CertificateOperations.GenerateCertificate.GenerateRootCAFiles() },
             { "generateintermediatecert", _ => ProjetRSA.CertificateOperations.GenerateCertificate.GenerateIntermediateCAFiles() },
             { "generateendentitycert", _ => ProjetRSA.CertificateOperations.GenerateCertificate.GenerateEndEntityCertFiles() },
-            { "signfile", _ => ProjetRSA.CertificateOperations.Signature.SignFile() },
-            { "verifyfile", _ => ProjetRSA.CertificateOperations.Signature.VerifyFile() },
+            { "signfile", _ => ProjetRSA.CertificateOperations.FileSignature.SignFile() },
+            { "verifyfile", _ => ProjetRSA.CertificateOperations.FileSignature.VerifyFile() },
         };
 
         if (!ProjetRSA.CommandInput.CommandInput.TryExecute(args, commands))

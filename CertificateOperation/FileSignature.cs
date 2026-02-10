@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ProjetRSA.CertificateOperations;
 
-class Signature
+class FileSignature
 {
     public static void SignFile(
         string privateKeyFile = "rsa_private.enc",
@@ -16,12 +16,14 @@ class Signature
     {
         if (!File.Exists(privateKeyFile))
         {
+            Loggers.LogError($"Private key file {privateKeyFile} not found.");
             Console.WriteLine($"Private key file {privateKeyFile} not found.");
             return;
         }
 
         if (!File.Exists(inputFile))
         {
+            Loggers.LogError($"File to sign ({inputFile}) not found.");
             Console.WriteLine($"File to sign ({inputFile}) not found.");
             return;
         }
@@ -29,15 +31,17 @@ class Signature
         using RSA? rsa = ProjetRSA.KeyOperations.KeyLoader.TryLoadPrivateKey(privateKeyFile);
         if (rsa == null)
         {
+            Loggers.LogError("Failed to load private key. Cannot sign file.");
+            Console.WriteLine("Failed to load private key. Cannot sign file.");
             return;
         }
 
         byte[] data = File.ReadAllBytes(inputFile);
         byte[] signature = rsa.SignData(data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
         File.WriteAllText(signatureFile, Convert.ToBase64String(signature));
-
-        Console.WriteLine("File signed successfully.");
-        Console.WriteLine($"Signature file: {signatureFile}");
+        
+        Loggers.LogInfo("File signed successfully.");
+        Loggers.LogInfo($"Signature file: {signatureFile}");
     }
 
     public static void VerifyFile(
@@ -48,21 +52,20 @@ class Signature
     {
         if (!File.Exists(certFile))
         {
-            Console.WriteLine($"Certificate file {certFile} not found.");
-            Console.WriteLine("Generate a certificate first: dotnet run generatecert");
-            return;
+            Loggers.LogError($"Certificate file {certFile} not found.");
+            throw new CertificateException($"Certificate file {certFile} not found.{Environment.NewLine} Generate a certificate first: dotnet run generatecert");
         }
 
         if (!File.Exists(inputFile))
         {
-            Console.WriteLine($"File to verify ({inputFile}) not found.");
-            return;
+            Loggers.LogError($"File to verify ({inputFile}) not found.");
+            throw new CertificateException($"File to verify ({inputFile}) not found.");
         }
 
         if (!File.Exists(signatureFile))
         {
-            Console.WriteLine($"Signature file ({signatureFile}) not found.");
-            return;
+            Loggers.LogError($"Signature file ({signatureFile}) not found.");
+            throw new CertificateException($"Signature file ({signatureFile}) not found.");
         }
 
         byte[] data = File.ReadAllBytes(inputFile);
@@ -75,7 +78,7 @@ class Signature
         }
         catch (FormatException)
         {
-            throw new CertificateOperation.CertificateException("Invalid signature format. Expected Base64.");
+            throw new CertificateException("Invalid signature format. Expected Base64.");
 
         }
 
@@ -84,10 +87,10 @@ class Signature
 
         if (rsa == null)
         {
-            throw new CertificateOperation.CertificateException("Certificate does not contain an RSA public key.");
+            throw new CertificateException("Certificate does not contain an RSA public key.");
         }
 
         bool isValid = rsa.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-        Console.WriteLine(isValid ? "Signature is valid." : "Signature is invalid.");
+        Loggers.LogInfo(isValid ? "Signature is valid." : "Signature is invalid.");
     }
 }

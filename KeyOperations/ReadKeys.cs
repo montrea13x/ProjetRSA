@@ -13,16 +13,29 @@ public static class ReadKeys
     {
         Console.WriteLine("=== Read RSA Keys ===\n");
 
-        if (!CheckRSAKey.Execute(publicKeyFile, privateKeyFile))
+        try
         {
-            Console.WriteLine("\nMissing RSA key files. Aborting.");
-            return;
+            CheckRSAKey.Execute(publicKeyFile, privateKeyFile);
+        }
+        catch (KeyException ex)
+        {
+            Loggers.LogError(ex.Message);
+            throw new KeyException ($"\n{ex.Message}\nAborting.");
         }
 
         Console.WriteLine("--- PUBLIC KEY ---");
-        string publicKey = File.ReadAllText(publicKeyFile);
-        Console.WriteLine(publicKey);
-        Console.WriteLine();
+        try
+        {
+            string publicKey = File.ReadAllText(publicKeyFile);
+            Loggers.LogInfo("Public key read successfully.");
+            Console.WriteLine(publicKey);
+            Console.WriteLine();
+        }
+        catch (Exception ex)
+        {
+            Loggers.LogError($"Error: Failed to read public key. {ex.Message}");
+            throw new KeyException($"\nError: Failed to read public key. {ex.Message}");
+        }
 
 
         // Read and decrypt private key
@@ -35,13 +48,15 @@ public static class ReadKeys
             byte[] encryptedData = File.ReadAllBytes(privateKeyFile);
             string privateKey = PrivateKeyEncryptor.Decrypt(encryptedData, password);
 
+            Loggers.LogInfo("Private key decrypted successfully.");
             Console.WriteLine("\n--- PRIVATE KEY (Decrypted) ---");
             Console.WriteLine(privateKey);
         }
 
         catch (Exception ex)
         {
-            Console.WriteLine($"\nError: Failed to decrypt private key. {ex.Message}");
+            Loggers.LogError($"Error: Failed to decrypt private key. {ex.Message}");
+            throw new KeyException($"\nError: Failed to decrypt private key. {ex.Message}");
         }
 
         finally

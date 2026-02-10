@@ -7,5 +7,6 @@ obj/
 *.sln.docstates
 *.log
 
+
 # Secrets / clés privées
 rsa_private.enc

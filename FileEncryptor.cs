@@ -17,14 +17,14 @@ public class FileEncryptor
 
         if (!File.Exists(publicKeyFile))
         {
-            Console.WriteLine("Public key file rsa_public.pem not found.");
-            return;
+            Loggers.LogError("Public key file rsa_public.pem not found.");
+            throw new Exceptions("Public key file rsa_public.pem not found.");
         }
 
         if (!File.Exists(inputFile))
         {
-            Console.WriteLine($"File to encrypt ({inputFile}) not found.");
-            return;
+            Loggers.LogError($"File to encrypt ({inputFile}) not found.");
+            throw new Exceptions($"File to encrypt ({inputFile}) not found.");
         }
 
         byte[] FileToEncrypt = File.ReadAllBytes(inputFile);
@@ -77,6 +77,7 @@ public class FileEncryptor
             // Écrire le fichier chiffré
             bw.Write(encryptedFile);
         }
+        Loggers.LogInfo("File encrypted successfully.");
         Console.WriteLine($"File encrypted Successfully.");
         Console.WriteLine($"Output file: {outputFile}");
     }
@@ -91,14 +92,14 @@ public class FileEncryptor
 
         if (!File.Exists(privateKeyFile))
         {
-            Console.WriteLine("Private key file rsa_private.enc not found.");
-            return;
+            Loggers.LogError("Private key file rsa_private.enc not found.");
+            throw new Exceptions("Private key file rsa_private.enc not found.");
         }
 
         if (!File.Exists(inputFile))
         {
-            Console.WriteLine($"File to decrypt ({inputFile}) not found.");
-            return;
+            Loggers.LogError($"File to decrypt ({inputFile}) not found.");
+            throw new Exceptions($"File to decrypt ({inputFile}) not found.");
         }
 
         byte[] encryptedFileContent = File.ReadAllBytes(inputFile);
@@ -106,7 +107,8 @@ public class FileEncryptor
         using RSA? rsa = ProjetRSA.KeyOperations.KeyLoader.TryLoadPrivateKey(privateKeyFile);
         if (rsa == null)
         {
-            return;
+            Loggers.LogError("Failed to load private key.");
+            throw new Exceptions("Failed to load private key.");
         }
 
         using var ms = new MemoryStream(encryptedFileContent);
@@ -150,6 +152,7 @@ public class FileEncryptor
 
         File.WriteAllBytes(outputFile, decryptedFile);
 
+        Loggers.LogInfo("File decrypted successfully.");
         Console.WriteLine("File decrypted successfully.");
         Console.WriteLine($"Output file: {outputFile}");
     }

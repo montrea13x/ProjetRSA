@@ -10,8 +10,8 @@ class KeyLoader
     {
         if (!File.Exists(privateKeyFile))
         {
-            Console.WriteLine($"Private key file {privateKeyFile} not found.");
-            return null;
+            Loggers.LogError($"Private key file {privateKeyFile} not found.");
+            throw new KeyException($"Private key file {privateKeyFile} not found.");
         }
 
         byte[] encryptedPrivateKey = File.ReadAllBytes(privateKeyFile);
@@ -26,8 +26,8 @@ class KeyLoader
         }
         catch (CryptographicException)
         {
-            Console.WriteLine("Invalid password or corrupted private key.");
-            return null;
+            Loggers.LogError("Invalid password or corrupted private key.");
+            throw new KeyException("Invalid password or corrupted private key.");
         }
 
         RSA rsa = RSA.Create();
