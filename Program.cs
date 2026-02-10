@@ -12,9 +12,9 @@ class Program
             { "read", _ => ProjetRSA.KeyOperations.ReadKeys.Execute() },
             { "encryptfile", _ => ProjetRSA.FileEncryptor.Encrypt() },
             { "decryptfile", _ => ProjetRSA.FileEncryptor.Decrypt() },
-            { "generaterootcert", _ => ProjetRSA.CertificateOperations.Certificate.GenerateRootCAFiles() },
-            { "generateintermediatecert", _ => ProjetRSA.CertificateOperations.Certificate.GenerateIntermediateCAFiles() },
-            { "generateendentitycert", _ => ProjetRSA.CertificateOperations.Certificate.GenerateEndEntityCertFiles() },
+            { "generaterootcert", _ => ProjetRSA.CertificateOperations.GenerateCertificate.GenerateRootCAFiles() },
+            { "generateintermediatecert", _ => ProjetRSA.CertificateOperations.GenerateCertificate.GenerateIntermediateCAFiles() },
+            { "generateendentitycert", _ => ProjetRSA.CertificateOperations.GenerateCertificate.GenerateEndEntityCertFiles() },
             { "signfile", _ => ProjetRSA.CertificateOperations.Signature.SignFile() },
             { "verifyfile", _ => ProjetRSA.CertificateOperations.Signature.VerifyFile() },
         };
