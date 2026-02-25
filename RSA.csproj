@@ -8,5 +8,6 @@
 
   <ItemGroup>
     <Compile Remove="unittests\**\*.cs" />
+    <Compile Remove="RSA.Guest\**\*.cs" />
   </ItemGroup>
 </Project>

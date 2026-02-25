@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace ProjetRSA.CertificateOperations;
 
-static class GenerateCertificate
+public static class GenerateCertificate
 {
     /// <summary>
     /// Generates a self-signed Root CA certificate and writes it to disk.

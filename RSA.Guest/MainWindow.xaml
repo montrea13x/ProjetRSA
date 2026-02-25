@@ -1,0 +1,79 @@
+﻿<Window x:Class="RSA.Guest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RSA.Guest"
+        mc:Ignorable="d"
+        Title="RSA Guest - File Signature" Height="640" Width="980" MinHeight="560" MinWidth="860">
+    <Grid Background="#DAE6E6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="#101D2F" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <Border HorizontalAlignment="Left" VerticalAlignment="Center" Margin="18,0,0,0">
+                <Image Source="assets/logo.png" Stretch="Uniform" Margin="8" />
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="1" Background="#192b47">
+            <StackPanel Margin="18,22,18,18">
+                <TextBlock Text="MENU" Foreground="#C7D2E2" FontSize="12" Margin="4,0,0,8" />
+                <Button Content="Create profile" Click="CreateProfileEmail_Click" Background="#20314B" Foreground="#EDE7DF" BorderBrush="#2B3E5E" BorderThickness="1" Height="38" FontSize="14" Padding="12,6" Margin="0,4,0,8" Cursor="Hand" />
+                <Button Content="Send mail" Background="#20314B" Foreground="#EDE7DF" BorderBrush="#2B3E5E" BorderThickness="1" Height="38" FontSize="14" Padding="12,6" Margin="0,4,0,8" Cursor="Hand" />
+                <Button Content="Sign file" Background="#20314B" Foreground="#EDE7DF" BorderBrush="#2B3E5E" BorderThickness="1" Height="38" FontSize="14" Padding="12,6" Margin="0,4,0,8" Cursor="Hand" />
+                <Button Content="Verify file" Background="#20314B" Foreground="#EDE7DF" BorderBrush="#2B3E5E" BorderThickness="1" Height="38" FontSize="14" Padding="12,6" Margin="0,4,0,8" Cursor="Hand" />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Column="1" Grid.RowSpan="2">
+            <Border Background="#0E1B2D" Height="64" VerticalAlignment="Top" />
+
+            <Grid Grid.Row="1" Margin="28,92,28,28">
+                <Border x:Name="CreateProfilePanel"
+                        Visibility="Collapsed"
+                        CornerRadius="8"
+                        Padding="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Width="460">
+                    <StackPanel>
+                        <TextBlock Text="Create profile" FontSize="20" FontWeight="SemiBold" Foreground="#101D2F" />
+                        <TextBlock Text="Enter your email before creating the profile." Margin="0,8,0,0" Foreground="#2B3E5E" />
+
+                        <TextBlock Text="Email" Margin="0,16,0,6" Foreground="#101D2F" />
+                        <TextBox x:Name="EmailTextBox"
+                                 Height="36"
+                                 Padding="8,6"
+                                 VerticalContentAlignment="Center" />
+
+                        <TextBlock x:Name="EmailErrorText"
+                                   Margin="0,8,0,0"
+                                   Foreground="#B3261E"
+                                   Visibility="Collapsed" />
+
+                        <Button Content="Generate profile"
+                                Click="GenerateProfileFromPanel_Click"
+                                Background="#20314B"
+                                Foreground="#EDE7DF"
+                                BorderBrush="#2B3E5E"
+                                BorderThickness="1"
+                                Height="38"
+                                FontSize="14"
+                                Padding="12,6"
+                                Margin="0,16,0,0"
+                                HorizontalAlignment="Left"
+                                Width="180"
+                                Cursor="Hand" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -7,7 +7,7 @@ using ProjetRSA;
 
 namespace ProjetRSA.CertificateOperations;
 
-class FileSignature
+public class FileSignature
 {
     /// <summary>
     /// Signs a file using the RSA private key and saves the signature to a file.
@@ -56,7 +56,7 @@ class FileSignature
         }
     }
 
-    public static void VerifyFile(
+    public static bool VerifyFile(
         string certFile = "certificate.pem",
         string inputFile = "test.txt",
         string signatureFile = "test.sig"
@@ -106,6 +106,7 @@ class FileSignature
 
             bool isValid = rsa.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             Loggers.LogInfo(isValid ? "Signature is valid." : "Signature is invalid.");
+            return isValid;
         }
         catch (Exception ex)
         {
