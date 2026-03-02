@@ -41,37 +41,77 @@
                         CornerRadius="8"
                         Padding="20"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Width="460">
-                    <StackPanel>
-                        <TextBlock Text="Create profile" FontSize="20" FontWeight="SemiBold" Foreground="#101D2F" />
-                        <TextBlock Text="Enter your email before creating the profile." Margin="0,8,0,0" Foreground="#2B3E5E" />
+                    VerticalAlignment="Top"
+                    Width="480">
+                    <Grid>
+                        <StackPanel x:Name="EmailStepPanel">
+                            <TextBlock Text="Create profile" FontSize="20" FontWeight="SemiBold" Foreground="#101D2F" />
+                            <TextBlock Text="Enter your email before creating the profile." Margin="0,8,0,0" Foreground="#2B3E5E" />
 
-                        <TextBlock Text="Email" Margin="0,16,0,6" Foreground="#101D2F" />
-                        <TextBox x:Name="EmailTextBox"
-                                 Height="36"
-                                 Padding="8,6"
-                                 VerticalContentAlignment="Center" />
+                            <TextBlock Text="Email" Margin="0,16,0,6" Foreground="#101D2F" />
+                            <TextBox x:Name="EmailTextBox"
+                                    Width="440"
+                                    Height="36"
+                                    Padding="8,6"
+                                    HorizontalAlignment="Left"
+                                    VerticalContentAlignment="Center" />
 
-                        <TextBlock x:Name="EmailErrorText"
-                                   Margin="0,8,0,0"
-                                   Foreground="#B3261E"
-                                   Visibility="Collapsed" />
+                            <TextBlock x:Name="EmailErrorText"
+                                    Width="440"
+                                    Margin="0,8,0,0"
+                                    Foreground="#B3261E"
+                                    TextWrapping="Wrap"
+                                    Visibility="Collapsed" />
 
-                        <Button Content="Generate profile"
-                                Click="GenerateProfileFromPanel_Click"
-                                Background="#20314B"
-                                Foreground="#EDE7DF"
-                                BorderBrush="#2B3E5E"
-                                BorderThickness="1"
-                                Height="38"
-                                FontSize="14"
-                                Padding="12,6"
-                                Margin="0,16,0,0"
-                                HorizontalAlignment="Left"
-                                Width="180"
-                                Cursor="Hand" />
-                    </StackPanel>
+                            <Button Content="Send verification code"
+                                    Click="GenerateCodeProfile_Click"
+                                    Background="#20314B"
+                                    Foreground="#EDE7DF"
+                                    BorderBrush="#2B3E5E"
+                                    BorderThickness="1"
+                                    Height="38"
+                                    FontSize="14"
+                                    Padding="12,6"
+                                    Margin="0,16,0,0"
+                                    HorizontalAlignment="Left"
+                                    Width="210"
+                                    Cursor="Hand" />
+                        </StackPanel>
+
+                        <StackPanel x:Name="CodeStepPanel" Visibility="Collapsed">
+                            <TextBlock Text="Email verification" FontSize="20" FontWeight="SemiBold" Foreground="#101D2F" />
+                            <TextBlock Text="Enter the 6-digit code sent to your email." Margin="0,8,0,0" Foreground="#2B3E5E" />
+
+                            <TextBlock Text="Verification code" Margin="0,16,0,6" Foreground="#101D2F" />
+                            <TextBox x:Name="VerificationCodeTextBox"
+                                    Width="440"
+                                    Height="36"
+                                    Padding="8,6"
+                                    HorizontalAlignment="Left"
+                                    VerticalContentAlignment="Center"
+                                    MaxLength="6" />
+
+                            <TextBlock x:Name="CodeErrorText"
+                                    Width="440"
+                                    Margin="0,8,0,0"
+                                    Foreground="#B3261E"
+                                    TextWrapping="Wrap"
+                                    Visibility="Collapsed" />
+
+                            <Button Content="Verify code"
+                                    Background="#20314B"
+                                    Foreground="#EDE7DF"
+                                    BorderBrush="#2B3E5E"
+                                    BorderThickness="1"
+                                    Height="38"
+                                    FontSize="14"
+                                    Padding="12,6"
+                                    Margin="0,16,0,0"
+                                    HorizontalAlignment="Left"
+                                    Width="180"
+                                    Cursor="Hand" />
+                        </StackPanel>
+                    </Grid>
                 </Border>
             </Grid>
         </Grid>

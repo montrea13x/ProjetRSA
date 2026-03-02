@@ -10,4 +10,8 @@
     <Compile Remove="unittests\**\*.cs" />
     <Compile Remove="RSA.Guest\**\*.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.15.0" />
+  </ItemGroup>
 </Project>

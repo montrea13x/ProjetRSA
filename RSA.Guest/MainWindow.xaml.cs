@@ -1,14 +1,11 @@
-﻿using System.IO;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
-using System.Net;
-using System.Net.Mail;
-using System.Security.Cryptography;
-using Microsoft.Extensions.Caching.Memory;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 using ProjetRSA.CertificateOperations;
-
+using System.Drawing.Text;
 
 namespace RSA.Guest;
 
@@ -17,25 +14,14 @@ namespace RSA.Guest;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private readonly HttpClient _httpClient = new HttpClient();
     private static readonly Regex EmailRegex = new(
         @"^[^\s@]+@[^\s@]+\.[^\s@]+$",
         RegexOptions.Compiled | RegexOptions.CultureInvariant
     );
 
-    private static string GenerateVerificationCode()
-    {
-        byte[] codeBytes = new byte[4];
-        RandomNumberGenerator.Fill(codeBytes);
-
-        int codeInt = BitConverter.ToInt32(codeBytes, 0) & 0x7FFFFFFF; // Ensure non-negative
-        return (codeInt % 1000000).ToString("D6"); // Format as 6-digit code
-    }
-
-    private readonly IMemoryCache _cache;
-
     public MainWindow()
     {
-        _cache = new MemoryCache(new MemoryCacheOptions());
         InitializeComponent();
     }
 
@@ -47,11 +33,15 @@ public partial class MainWindow : Window
     private void CreateProfileEmail_Click(object sender, RoutedEventArgs e)
     {
         CreateProfilePanel.Visibility = Visibility.Visible;
+        EmailStepPanel.Visibility = Visibility.Visible;
+        CodeStepPanel.Visibility = Visibility.Collapsed;
         EmailErrorText.Visibility = Visibility.Collapsed;
+        CodeErrorText.Visibility = Visibility.Collapsed;
+        VerificationCodeTextBox.Clear();
         EmailTextBox.Focus();
     }
 
-    private void GenerateProfileFromPanel_Click(object sender, RoutedEventArgs e)
+    private async void GenerateCodeProfile_Click(object sender, RoutedEventArgs e)
     {
         string email = EmailTextBox.Text.Trim();
         if (!EmailRegex.IsMatch(email))
@@ -62,5 +52,38 @@ public partial class MainWindow : Window
         }
 
         EmailErrorText.Visibility = Visibility.Collapsed;
+        EmailStepPanel.Visibility = Visibility.Collapsed;
+        CodeStepPanel.Visibility = Visibility.Visible;
+        CodeErrorText.Visibility = Visibility.Collapsed;
+        VerificationCodeTextBox.Clear();
+        VerificationCodeTextBox.Focus();
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync(
+                "https://pc-2.ca/request_verification.php",
+                new { Email = email }
+            );
+
+            string content = await response.Content.ReadAsStringAsync();
+
+            MessageBox.Show("Status Code: " + response.StatusCode + "\nContent: " + content);
+        }
+        catch (Exception ex)
+        {
+            EmailErrorText.Text = "SMTP error: " + GetInnermostMessage(ex);
+            EmailErrorText.Visibility = Visibility.Visible;
+        }
+    }
+
+
+    private static string GetInnermostMessage(Exception exception)
+    {
+        Exception current = exception;
+        while (current.InnerException is not null)
+        {
+            current = current.InnerException;
+        }
+
+        return current.Message;
     }
 }
